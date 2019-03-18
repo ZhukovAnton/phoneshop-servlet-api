@@ -82,4 +82,6 @@ public class Product {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    //TODO: implement equals and hashCode
 }

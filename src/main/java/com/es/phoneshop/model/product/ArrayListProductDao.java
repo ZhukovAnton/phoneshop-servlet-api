@@ -15,7 +15,10 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public Product getProduct(Long id) throws NoSuchProductWithCurrentIdException {
-        return products.stream().filter(p -> p.getId().equals(id)).findFirst().orElseThrow(NoSuchProductWithCurrentIdException::new);
+        return products.stream()
+                .filter(p -> p.getId().equals(id) && p.getStock() > 0 && p.getPrice() != null)
+                .findFirst()
+                .orElseThrow(NoSuchProductWithCurrentIdException::new);
     }
 
     @Override
@@ -32,7 +35,6 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public void delete(Long id) throws NoSuchProductWithCurrentIdException {
-        Product productForDelete = products.stream().filter(p -> p.getId().equals(id)).findFirst().orElseThrow(NoSuchProductWithCurrentIdException::new);
-        products.remove(productForDelete);
+        if (!products.removeIf(p -> p.getId().equals(id))) throw new NoSuchProductWithCurrentIdException();
     }
 }
