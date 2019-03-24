@@ -13,13 +13,13 @@ public class ProductListPageServlet extends HttpServlet {
 
     @Override
     public void init(){
-        products = new ArrayListProductDao();
+        products = ArrayListProductDao.getInstance();
         products.initWithPhoneConstants();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("products", products.findProducts(request));
+        request.setAttribute("products", products.processRequestForPLP(request));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 }

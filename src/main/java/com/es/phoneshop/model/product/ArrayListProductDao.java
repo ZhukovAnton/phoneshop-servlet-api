@@ -1,7 +1,7 @@
 package com.es.phoneshop.model.product;
 
 import com.es.phoneshop.exception.NoSuchProductWithCurrentIdException;
-import com.es.phoneshop.parser.SearchLineParser;
+import com.es.phoneshop.service.ProductService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -9,9 +9,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
+    private static volatile ArrayListProductDao instance;
     private List<Product> products;
 
-    public ArrayListProductDao() {
+    public static ArrayListProductDao getInstance() {
+        ArrayListProductDao localInstance = instance;
+        if (localInstance == null) {
+            synchronized (ArrayListProductDao.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new ArrayListProductDao();
+                }
+            }
+        }
+        return localInstance;
+    }
+
+    private ArrayListProductDao() {
         products = new ArrayList<>();
     }
 
@@ -31,38 +45,22 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findProducts(HttpServletRequest request) {
+    public List<Product> processRequestForPLP(HttpServletRequest request){
         List<Product> returnList;
-        String param = request.getParameter("query");
-        if (param == null || param.isEmpty()){
+        ProductService service = ProductService.getInstance();
+
+        String paramSearch = request.getParameter("search");
+        String paramSort = request.getParameter("sort");
+        String paramOrder = request.getParameter("order");
+
+        if (paramSearch != null && !paramSearch.isEmpty()){
+            returnList = service.searchProducts(paramSearch);
+        }
+        else{
             returnList = findProducts();
         }
-        else {
-            String[] words = SearchLineParser.getInstance().parseLine(param);
-            returnList = products.stream()
-                    .filter(Product::isValid)
-                    .filter(p -> {
-                        for (String word : words){
-                            if (p.getDescription().toLowerCase().contains(word.toLowerCase())){
-                                return true;
-                            }
-                        }
-                        return false;
-                    })
-                    .sorted((first, second) -> {
-                        Integer amountOfMatchesFirst = 0;
-                        Integer amountOfMatchesSecond = 0;
-                        for (String word : words){
-                            if (first.getDescription().toLowerCase().contains(word.toLowerCase())){
-                                amountOfMatchesFirst++;
-                            }
-                            if (second.getDescription().toLowerCase().contains(word.toLowerCase())){
-                                amountOfMatchesSecond++;
-                            }
-                        }
-                        return amountOfMatchesSecond.compareTo(amountOfMatchesFirst);
-                    })
-                    .collect(Collectors.toList());
+        if (paramSort != null && !paramSort.isEmpty()){
+            service.sortProducts(returnList, paramSort, paramOrder);
         }
         return returnList;
     }

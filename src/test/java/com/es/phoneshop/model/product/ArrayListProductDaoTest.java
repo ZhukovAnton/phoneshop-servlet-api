@@ -21,7 +21,7 @@ public class ArrayListProductDaoTest
 
     @Before
     public void setup() {
-        productDao = new ArrayListProductDao();
+        productDao = ArrayListProductDao.getInstance();
 
 
         product1 = Mockito.mock(Product.class);

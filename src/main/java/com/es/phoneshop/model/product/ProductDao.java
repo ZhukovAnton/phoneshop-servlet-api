@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductDao {
     Product getProduct(Long id) throws NoSuchProductWithCurrentIdException;
-    List<Product> findProducts(HttpServletRequest request);
+    List<Product> processRequestForPLP(HttpServletRequest request);
     List<Product> findProducts();
     void save(Product product);
     void delete(Long id) throws NoSuchProductWithCurrentIdException;
