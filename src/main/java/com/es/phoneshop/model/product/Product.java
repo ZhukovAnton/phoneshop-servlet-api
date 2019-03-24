@@ -27,6 +27,8 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    public boolean isValid() {return this.getStock() > 0 && this.getPrice() != null;}
+
     public Long getId() {
         return id;
     }
@@ -82,4 +84,6 @@ public class Product {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    //TODO: implement equals and hashCode
 }

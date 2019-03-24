@@ -8,12 +8,18 @@
   <p>
     Welcome to Expert-Soft training!
   </p>
+  <form>
+    <input name="search" value="${param.search}">
+    <button>Search</button>
+  </form>
   <table>
     <thead>
       <tr>
         <td>Image</td>
-        <td>Description</td>
-        <td class="price">Price</td>
+        <td>Description <a href="?search=${param.search}&sort=description&order=asc">asc</a>
+          <a href="?search=${param.search}&sort=description&order=desc">desc</a></td>
+        <td class="price">Price  <a href="?search=${param.search}&sort=price&order=asc">asc</a>
+          <a href="?search=${param.search}&sort=price&order=desc">desc</a></td>
       </tr>
     </thead>
     <c:forEach var="product" items="${products}">
@@ -21,7 +27,7 @@
         <td>
           <img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
         </td>
-        <td>${product.description}</td>
+        <td><a href="/products/${product.id} " methods="get">${product.description}</a></td>
         <td class="price">
           <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
         </td>
