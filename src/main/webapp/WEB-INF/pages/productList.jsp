@@ -27,7 +27,7 @@
         <td>
           <img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
         </td>
-        <td><a href="/products/${product.id} " methods="get">${product.description}</a></td>
+        <td><a href="/phoneshop-servlet-api/products/${product.id} ">${product.description}</a></td>
         <td class="price">
           <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
         </td>

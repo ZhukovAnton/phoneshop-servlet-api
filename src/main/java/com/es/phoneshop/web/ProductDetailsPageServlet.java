@@ -30,8 +30,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
         Product product = productDao.getProduct(Long.parseLong(productID));
 
         request.setAttribute("product", product);
-
-        request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
 
     }
 }
