@@ -1,6 +1,6 @@
 package com.es.phoneshop.exception;
 
-public class NoSuchProductWithCurrentIdException extends Exception {
+public class NoSuchProductWithCurrentIdException extends RuntimeException {
     public NoSuchProductWithCurrentIdException() {
     }
 
