@@ -76,21 +76,4 @@ public class ArrayListProductDao implements ProductDao {
     public void delete(Long id) throws NoSuchProductWithCurrentIdException {
         if (!products.removeIf(p -> p.getId().equals(id))) throw new NoSuchProductWithCurrentIdException();
     }
-
-    @Override
-    public void initWithPhoneConstants() {
-        save(SamplePhoneConstant.SAMSUNG_GALAXY_S);
-        save(SamplePhoneConstant.SAMSUNG_GALAXY_S_II);
-        save(SamplePhoneConstant.SAMSUNG_GALAXY_S_III);
-        save(SamplePhoneConstant.HTC_EVO_SHIFT_4G);
-        save(SamplePhoneConstant.IPHONE);
-        save(SamplePhoneConstant.IPHONE6);
-        save(SamplePhoneConstant.NOKIA_3310);
-        save(SamplePhoneConstant.PALM_PIXI);
-        save(SamplePhoneConstant.SIEMENS_C56);
-        save(SamplePhoneConstant.SIEMENS_C61);
-        save(SamplePhoneConstant.SIEMENS_SXG75);
-        save(SamplePhoneConstant.SONY_ERICSSON_C901);
-        save(SamplePhoneConstant.Sony_XPERIA_XZ);
-    }
 }

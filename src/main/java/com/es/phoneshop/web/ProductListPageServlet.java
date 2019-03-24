@@ -14,7 +14,6 @@ public class ProductListPageServlet extends HttpServlet {
     @Override
     public void init(){
         products = ArrayListProductDao.getInstance();
-        products.initWithPhoneConstants();
     }
 
     @Override
