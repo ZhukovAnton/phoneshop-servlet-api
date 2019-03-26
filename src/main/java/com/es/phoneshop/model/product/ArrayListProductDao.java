@@ -1,12 +1,12 @@
 package com.es.phoneshop.model.product;
 
+import com.es.phoneshop.exception.IllegalSortParametrException;
 import com.es.phoneshop.exception.NoSuchProductWithCurrentIdException;
-import com.es.phoneshop.service.ProductService;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ArrayListProductDao implements ProductDao {
     private static volatile ArrayListProductDao instance;
@@ -29,8 +29,73 @@ public class ArrayListProductDao implements ProductDao {
         products = new ArrayList<>();
     }
 
+
+
+
+    private Stream<Product> getValidProductStream() {
+        return products.stream().filter(p -> p.getPrice() != null && p.getStock() > 0);
+    }
+
+
+
+
+    private List<Product> getSearchedProductList(String search) {
+        ConcurrentHashMap<Product, Long> concurrentHashMap = new ConcurrentHashMap<>();
+        String[] tokens = search.toLowerCase().split("\\s+");
+        getValidProductStream().forEach((Product p) -> concurrentHashMap.put(p, Arrays.stream(tokens)
+                                            .filter(word -> p.getDescription()
+                                                            .toLowerCase()
+                                                            .contains(word.toLowerCase()))
+                                            .count())
+        );
+        return concurrentHashMap.entrySet().stream()
+                .filter((Map.Entry<Product, Long> p) -> p.getValue() > 0)
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .map(Map.Entry::getKey).collect(Collectors.toList());
+    }
+
+
+
+
+    private Comparator<Product> getComparator(String sort) {
+        switch (sort) {
+            case "description" : return Comparator.comparing(Product::getDescription);
+            case "price" : return Comparator.comparing(Product::getPrice);
+            default : return Comparator.comparing(Product::getId);
+        }
+    }
+
+
+    /**
+     *
+     * @param listForSorting forced evil for improving getSearchedAndSortedProductList method
+     * @param sort
+     * @param order
+     * @return
+     * @throws IllegalSortParametrException
+     */
+
+    private List<Product> getSortedProductList(List<Product> listForSorting, String sort, String order) throws IllegalSortParametrException {
+        //order - asc by default
+        if ((sort.matches("description") || sort.matches("price"))) {
+            Comparator<Product> comparator = getComparator(sort);
+            if ("desc".equals(order)) comparator = comparator.reversed();
+            return listForSorting.stream().sorted(comparator).collect(Collectors.toList());
+        }
+        else {
+            throw new IllegalSortParametrException();
+        }
+    }
+
+
+
+    private List<Product> getSearchedAndSortedProductList(String search, String sort, String order) throws IllegalSortParametrException {
+        return getSortedProductList(getSearchedProductList(search), sort, order);
+    }
+
+
     @Override
-    public Product getProduct(Long id) throws NoSuchProductWithCurrentIdException {
+    public Product getProduct(long id) throws NoSuchProductWithCurrentIdException {
         return products.stream()
                 .filter(p -> p.getId().equals(id) && p.getStock() > 0 && p.getPrice() != null)
                 .findFirst()
@@ -38,29 +103,20 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findProducts() {
-        return products.stream()
-                .filter(Product::isValid)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Product> processRequestForPLP(HttpServletRequest request){
-        List<Product> returnList;
-        ProductService service = ProductService.getInstance();
-
-        String paramSearch = request.getParameter("search");
-        String paramSort = request.getParameter("sort");
-        String paramOrder = request.getParameter("order");
-
-        if (paramSearch != null && !paramSearch.isEmpty()){
-            returnList = service.searchProducts(paramSearch);
+    public List<Product> findProducts(String search, String sort, String order) throws IllegalSortParametrException {
+        List<Product> returnList = products;
+        if (null != search && null == sort){
+            returnList = getSearchedProductList(search);
         }
-        else{
-            returnList = findProducts();
-        }
-        if (paramSort != null && !paramSort.isEmpty()){
-            service.sortProducts(returnList, paramSort, paramOrder);
+        else {
+            if (null == search && null != sort) {
+                returnList =  getSortedProductList(getValidProductStream().collect(Collectors.toList()), sort, order);
+            }
+            else{
+                if (null != search) {
+                    returnList = getSearchedAndSortedProductList(search, sort, order);
+                }
+            }
         }
         return returnList;
     }
@@ -73,7 +129,7 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public void delete(Long id) throws NoSuchProductWithCurrentIdException {
+    public void delete(long id) throws NoSuchProductWithCurrentIdException {
         if (!products.removeIf(p -> p.getId().equals(id))) throw new NoSuchProductWithCurrentIdException();
     }
 }

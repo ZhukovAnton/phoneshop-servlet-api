@@ -1,5 +1,6 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.exception.IllegalSortParametrException;
 import com.es.phoneshop.exception.NoSuchProductWithCurrentIdException;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
@@ -24,10 +25,19 @@ public class ProductDetailsPageServlet extends HttpServlet {
         String productID = URI.substring(URI.lastIndexOf('/') + 1);
 
         if (!productID.matches("^\\d+$")){
-            throw new NoSuchProductWithCurrentIdException();
+            response.sendError(404);
+            return;
         }
 
-        Product product = productDao.getProduct(Long.parseLong(productID));
+        Product product;
+        try{
+            product = productDao.getProduct(Long.parseLong(productID));
+        }
+        catch(IllegalSortParametrException | NoSuchProductWithCurrentIdException e){
+            response.sendError(404);
+            return;
+        }
+
 
         request.setAttribute("product", product);
         request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);

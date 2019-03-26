@@ -2,6 +2,7 @@ package com.es.phoneshop.model.product;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.Objects;
 
 public class Product {
     private Long id;
@@ -26,8 +27,6 @@ public class Product {
         this.stock = stock;
         this.imageUrl = imageUrl;
     }
-
-    public boolean isValid() {return this.getStock() > 0 && this.getPrice() != null;}
 
     public Long getId() {
         return id;
@@ -86,4 +85,19 @@ public class Product {
     }
 
     //TODO: implement equals and hashCode
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return id.equals(product.id) &&
+                code.equals(product.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code);
+    }
 }
