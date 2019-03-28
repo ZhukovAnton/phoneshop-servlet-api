@@ -37,6 +37,9 @@ public class ArrayListProductDao implements ProductDao {
     }
 
 
+    ArrayListProductDao(List<Product> products) {
+        this.products = products;
+    }
 
 
     private List<Product> getSearchedProductList(String search) {
@@ -45,7 +48,7 @@ public class ArrayListProductDao implements ProductDao {
         getValidProductStream().forEach((Product p) -> concurrentHashMap.put(p, Arrays.stream(tokens)
                                             .filter(word -> p.getDescription()
                                                             .toLowerCase()
-                                                            .contains(word.toLowerCase()))
+                                                            .contains(word))
                                             .count())
         );
         return concurrentHashMap.entrySet().stream()
@@ -72,24 +75,18 @@ public class ArrayListProductDao implements ProductDao {
      * @param sort
      * @param order
      * @return
-     * @throws IllegalSortParametrException
      */
 
-    private List<Product> getSortedProductList(List<Product> listForSorting, String sort, String order) throws IllegalSortParametrException {
+    private List<Product> getSortedProductList(List<Product> listForSorting, String sort, String order) {
         //order - asc by default
-        if ((sort.matches("description") || sort.matches("price"))) {
-            Comparator<Product> comparator = getComparator(sort);
-            if ("desc".equals(order)) comparator = comparator.reversed();
-            return listForSorting.stream().sorted(comparator).collect(Collectors.toList());
-        }
-        else {
-            throw new IllegalSortParametrException();
-        }
+        Comparator<Product> comparator = getComparator(sort);
+        if ("desc".equals(order)) comparator = comparator.reversed();
+        return listForSorting.stream().sorted(comparator).collect(Collectors.toList());
     }
 
 
 
-    private List<Product> getSearchedAndSortedProductList(String search, String sort, String order) throws IllegalSortParametrException {
+    private List<Product> getSearchedAndSortedProductList(String search, String sort, String order) {
         return getSortedProductList(getSearchedProductList(search), sort, order);
     }
 

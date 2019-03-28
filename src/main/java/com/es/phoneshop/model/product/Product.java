@@ -84,20 +84,26 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    //TODO: implement equals and hashCode
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Product)) return false;
         Product product = (Product) o;
-        return id.equals(product.id) &&
-                code.equals(product.code);
+        return getId().equals(product.getId()) &&
+                getCode().equals(product.getCode());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, code);
+        return Objects.hash(getId(), getCode());
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + getId() +
+                ", hashCode='" + hashCode() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                '}';
     }
 }

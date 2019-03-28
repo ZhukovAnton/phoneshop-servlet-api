@@ -1,5 +1,7 @@
 package com.es.phoneshop.web;
 
+
+import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,28 +21,38 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductListPageServletTest {
+public class ProductDetailsPageServletTest {
+    @Mock
+    private ProductDao productDao;
+    @InjectMocks
+    private ProductDetailsPageServlet servlet;
+
     @Mock
     private HttpServletRequest request;
     @Mock
     private HttpServletResponse response;
     @Mock
-    private RequestDispatcher requestDispatcher;
+    private RequestDispatcher dispatcher;
     @Mock
-    private ProductDao productDao;
-    @InjectMocks
-
-    private ProductListPageServlet servlet = new ProductListPageServlet();
+    private  Product product;
 
     @Before
-    public void setup(){
-        servlet.init();
-        when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+    public void setUp() {
+        when(request.getRequestURI()).thenReturn("/1");
+        when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+        when(productDao.getProduct(1L)).thenReturn(product);
     }
 
     @Test
-    public void testDoGet() throws ServletException, IOException {
+    public void testDoGet() throws IOException, ServletException {
         servlet.doGet(request, response);
-        verify(requestDispatcher).forward(request, response);
+        verify(dispatcher).forward(request,response);
     }
+
+    @Test
+    public void testSetAttribute() throws IOException, ServletException {
+        servlet.doGet(request, response);
+        verify(request).setAttribute("product", product);
+    }
+
 }

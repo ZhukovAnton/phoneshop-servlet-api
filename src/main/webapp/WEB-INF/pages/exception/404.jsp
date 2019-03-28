@@ -14,7 +14,7 @@
     <p>
         <b>
             404
-            Page is not find:(
+            Page is not found:(
         </b>
     </p>
 </body>

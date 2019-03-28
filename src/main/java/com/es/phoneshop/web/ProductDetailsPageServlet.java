@@ -1,9 +1,9 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.exception.IllegalSortParametrException;
 import com.es.phoneshop.exception.NoSuchProductWithCurrentIdException;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
+import com.es.phoneshop.model.product.ProductDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ProductDetailsPageServlet extends HttpServlet {
-    ArrayListProductDao productDao;
+    ProductDao productDao;
+
 
     @Override
     public void init(){
@@ -33,7 +34,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
         try{
             product = productDao.getProduct(Long.parseLong(productID));
         }
-        catch(IllegalSortParametrException | NoSuchProductWithCurrentIdException e){
+        catch(NoSuchProductWithCurrentIdException e){
             response.sendError(404);
             return;
         }
