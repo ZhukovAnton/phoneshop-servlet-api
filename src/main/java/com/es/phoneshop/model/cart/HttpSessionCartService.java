@@ -7,12 +7,12 @@ import com.es.phoneshop.model.product.ProductDao;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.Optional;
 
-public class HttpSessionCartService implements CartService {
+public class HttpSessionCartService implements CartService, Serializable {
     private static final String SESSION_CART_KEY = "sessionCart";
     private static volatile HttpSessionCartService instance;
-
 
     public static HttpSessionCartService getInstance() {
         if (instance == null) {
@@ -40,7 +40,6 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void addToCart(Cart cart, long productId, int quantity) throws OutOfStockException {
-//   TODO:What about synchronizing?
         ProductDao productDao = ArrayListProductDao.getInstance();
         Product product = productDao.getProduct(productId);
         int stock = product.getStock();

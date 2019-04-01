@@ -6,6 +6,7 @@ import com.es.phoneshop.model.cart.CartService;
 import com.es.phoneshop.model.cart.HttpSessionCartService;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.ProductDao;
+import com.es.phoneshop.model.resentlyviewed.HttpSessionRecentlyViewedService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,6 +40,9 @@ public class ProductListPageServlet extends HttpServlet {
             return;
         }
         request.setAttribute("cart", HttpSessionCartService.getInstance().getCart(request).getCartItems());
+        request.setAttribute("recentlyViewed", HttpSessionRecentlyViewedService.getInstance()
+                                                                                    .getRecentlyViewed()
+                                                                                    .getRecentlyViewedAsList());
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 }

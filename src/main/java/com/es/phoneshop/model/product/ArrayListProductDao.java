@@ -5,6 +5,7 @@ import com.es.phoneshop.exception.NoSuchProductWithCurrentIdException;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,10 +31,8 @@ public class ArrayListProductDao implements ProductDao {
     }
 
 
-
-
-    private Stream<Product> getValidProductStream() {
-        return products.stream().filter(p -> p.getPrice() != null && p.getStock() > 0);
+    private Predicate<Product> getValidationPredicate() {
+        return p -> p.getStock() > 0 && null != p.getPrice();
     }
 
 
@@ -45,11 +44,13 @@ public class ArrayListProductDao implements ProductDao {
     private List<Product> getSearchedProductList(String search) {
         ConcurrentHashMap<Product, Long> concurrentHashMap = new ConcurrentHashMap<>();
         String[] tokens = search.toLowerCase().split("\\s+");
-        getValidProductStream().forEach((Product p) -> concurrentHashMap.put(p, Arrays.stream(tokens)
-                                            .filter(word -> p.getDescription()
-                                                            .toLowerCase()
-                                                            .contains(word))
-                                            .count())
+        products.stream()
+                .filter(getValidationPredicate())
+                .forEach((Product p) -> concurrentHashMap.put(p, Arrays.stream(tokens)
+                                                                       .filter(word -> p.getDescription()
+                                                                                        .toLowerCase()
+                                                                                        .contains(word))
+                                                                       .count())
         );
         return concurrentHashMap.entrySet().stream()
                 .filter((Map.Entry<Product, Long> p) -> p.getValue() > 0)
@@ -71,10 +72,10 @@ public class ArrayListProductDao implements ProductDao {
 
     /**
      *
-     * @param listForSorting forced evil for improving getSearchedAndSortedProductList method
-     * @param sort
-     * @param order
-     * @return
+     * @param listForSorting - this list will be sorted
+     * @param sort - by what field list will be sorted
+     * @param order - in what order it will be sorted
+     * @return - sorted list
      */
 
     private List<Product> getSortedProductList(List<Product> listForSorting, String sort, String order) {
@@ -84,11 +85,6 @@ public class ArrayListProductDao implements ProductDao {
         return listForSorting.stream().sorted(comparator).collect(Collectors.toList());
     }
 
-
-
-    private List<Product> getSearchedAndSortedProductList(String search, String sort, String order) {
-        return getSortedProductList(getSearchedProductList(search), sort, order);
-    }
 
 
     @Override
@@ -102,19 +98,14 @@ public class ArrayListProductDao implements ProductDao {
     @Override
     public List<Product> findProducts(String search, String sort, String order) throws IllegalSortParametrException {
         List<Product> returnList = products;
-        if (null != search && null == sort){
+        if (null != search){
             returnList = getSearchedProductList(search);
         }
-        else {
-            if (null == search && null != sort) {
-                returnList =  getSortedProductList(getValidProductStream().collect(Collectors.toList()), sort, order);
-            }
-            else{
-                if (null != search) {
-                    returnList = getSearchedAndSortedProductList(search, sort, order);
-                }
-            }
+
+        if (sort != null) {
+            returnList = getSortedProductList(returnList, sort, order);
         }
+
         return returnList;
     }
 
