@@ -2,6 +2,8 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.exception.IllegalSortParametrException;
 import com.es.phoneshop.exception.NoSuchProductWithCurrentIdException;
+import com.es.phoneshop.model.cart.CartService;
+import com.es.phoneshop.model.cart.HttpSessionCartService;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.ProductDao;
 
@@ -36,6 +38,7 @@ public class ProductListPageServlet extends HttpServlet {
             response.sendError(404);
             return;
         }
+        request.setAttribute("cart", HttpSessionCartService.getInstance().getCart(request).getCartItems());
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 }

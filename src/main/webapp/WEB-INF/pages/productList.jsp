@@ -16,10 +16,8 @@
     <thead>
       <tr>
         <td>Image</td>
-        <td>Description <a href="?search=${param.search}&sort=description&order=asc">asc</a>
-          <a href="?search=${param.search}&sort=description&order=desc">desc</a></td>
-        <td class="price">Price  <a href="?search=${param.search}&sort=price&order=asc">asc</a>
-          <a href="?search=${param.search}&sort=price&order=desc">desc</a></td>
+        <td>Description <tags:linksForSort search="${param.search}" sort="description"/>
+        <td class="price">Price <tags:linksForSort search="${param.search}" sort="price"/></td>
       </tr>
     </thead>
     <c:forEach var="product" items="${products}">

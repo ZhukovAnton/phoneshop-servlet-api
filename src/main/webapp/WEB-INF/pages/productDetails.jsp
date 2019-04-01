@@ -4,10 +4,9 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <jsp:useBean id="product" type="com.es.phoneshop.model.product.Product" scope="request"/>
+<jsp:useBean id="cart" type="java.util.ArrayList" scope="request"/>
 <tags:master pageTitle="Product Detail">
-    <p>
-        Welcome to Expert-Soft training!
-    </p>
+
     <table>
         <thead>
         <tr>
@@ -27,3 +26,21 @@
         </tr>
     </table>
 </tags:master>
+<p>
+    <form method="post">
+        <input name="quantity" value="${!empty param.quantity ? param.quantity : 1}"/>
+        <button>Add to Cart</button>
+    </form>
+</p>
+<c:choose>
+    <c:when test="${!empty error}">
+        <p style="color: firebrick">
+            ${error}
+        </p>
+    </c:when>
+    <c:otherwise>
+        <p style="color: forestgreen">
+            ${param.message}
+        </p>
+    </c:otherwise>
+</c:choose>
