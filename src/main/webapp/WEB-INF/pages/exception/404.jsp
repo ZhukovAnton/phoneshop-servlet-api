@@ -13,8 +13,7 @@
 <body>
     <p>
         <b>
-            404
-            Page is not found:(
+            404 <br> ${!empty error.message ? error.message : "Page is not found:("}
         </b>
     </p>
 </body>

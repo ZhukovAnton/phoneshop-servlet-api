@@ -100,10 +100,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + getId() +
-                ", hashCode='" + hashCode() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                '}';
+        return "id = " + getId() + " " + getDescription() + " ";
     }
 }

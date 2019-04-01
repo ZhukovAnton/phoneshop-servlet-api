@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%@ attribute name="pageTitle" required="true" %>
 
@@ -13,6 +14,10 @@
       <img src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
       PhoneShop
     </a>
+    Cart:
+    <c:forEach var="item" items="${cart}">
+      <br> ${item.product} quantity = ${item.quantity}
+    </c:forEach>
   </header>
   <main>
     <jsp:doBody/>
