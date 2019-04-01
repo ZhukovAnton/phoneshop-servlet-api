@@ -1,6 +1,9 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.exception.IllegalSortParametrException;
+import com.es.phoneshop.exception.NoSuchProductWithCurrentIdException;
 import com.es.phoneshop.model.product.ArrayListProductDao;
+import com.es.phoneshop.model.product.ProductDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,16 +12,30 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ProductListPageServlet extends HttpServlet {
-    private ArrayListProductDao products;
+    private ProductDao productDao;
 
     @Override
     public void init(){
-        products = ArrayListProductDao.getInstance();
+        productDao = ArrayListProductDao.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("products", products.processRequestForPLP(request));
+        String searchLine = request.getParameter("search");
+        String sort = request.getParameter("sort");
+        String order = request.getParameter("order");
+        try{
+            if (sort != null) {
+                if (!sort.equals("description")  && !sort.equals("price") && !sort.equals("")) {
+                    throw new IllegalSortParametrException();
+                }
+            }
+            request.setAttribute("products", productDao.findProducts(searchLine, sort, order));
+        }
+        catch(NoSuchProductWithCurrentIdException | IllegalSortParametrException e){
+            response.sendError(404);
+            return;
+        }
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 }
