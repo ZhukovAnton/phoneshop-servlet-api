@@ -13,6 +13,7 @@ import java.util.Optional;
 public class HttpSessionCartService implements CartService, Serializable {
     private static final String SESSION_CART_KEY = "sessionCart";
     private static volatile HttpSessionCartService instance;
+    private static ProductDao productDao = ArrayListProductDao.getInstance();
 
     public static HttpSessionCartService getInstance() {
         if (instance == null) {
@@ -40,7 +41,6 @@ public class HttpSessionCartService implements CartService, Serializable {
 
     @Override
     public void addToCart(Cart cart, long productId, int quantity) throws OutOfStockException {
-        ProductDao productDao = ArrayListProductDao.getInstance();
         Product product = productDao.getProduct(productId);
         int stock = product.getStock();
 

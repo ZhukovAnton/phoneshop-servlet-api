@@ -36,10 +36,10 @@ public class ProductDetailsPageServlet extends HttpServlet {
             productID = getProductIdFromRequest(request);
             Product product;
             product = productDao.getProduct(productID);
-            recentlyViewedService.add(product);
             request.setAttribute("product", product);
             request.setAttribute("cart", cartService.getCart(request).getCartItems());
             request.setAttribute("recentlyViewed", recentlyViewedService.getRecentlyViewed().getRecentlyViewedAsList());
+            recentlyViewedService.add(product);
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
         }
         catch(NumberFormatException e) {
