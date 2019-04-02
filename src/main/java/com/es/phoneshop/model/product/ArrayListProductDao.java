@@ -90,7 +90,8 @@ public class ArrayListProductDao implements ProductDao {
     @Override
     public Product getProduct(long id) throws NoSuchProductWithCurrentIdException {
         return products.stream()
-                .filter(p -> p.getId().equals(id) && p.getStock() > 0 && p.getPrice() != null)
+                .filter(getValidationPredicate())
+                .filter(p -> p.getId().equals(id))
                 .findFirst()
                 .orElseThrow(NoSuchProductWithCurrentIdException::new);
     }

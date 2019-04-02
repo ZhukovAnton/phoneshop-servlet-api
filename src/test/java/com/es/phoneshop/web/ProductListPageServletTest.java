@@ -1,6 +1,10 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.model.cart.Cart;
+import com.es.phoneshop.model.cart.HttpSessionCartService;
 import com.es.phoneshop.model.product.ProductDao;
+import com.es.phoneshop.model.resentlyviewed.HttpSessionRecentlyViewedService;
+import com.es.phoneshop.model.resentlyviewed.RecentlyViewed;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +16,11 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,14 +35,24 @@ public class ProductListPageServletTest {
     private RequestDispatcher requestDispatcher;
     @Mock
     private ProductDao productDao;
+    @Mock
+    private HttpSessionRecentlyViewedService recentlyViewedService;
+    @Mock
+    private HttpSessionCartService cartService;
     @InjectMocks
-
     private ProductListPageServlet servlet = new ProductListPageServlet();
+
+    @Mock
+    HttpSession session;
+    @Mock
+    Cart cart;
 
     @Before
     public void setup(){
         servlet.init();
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("sessionCart")).thenReturn(cart);
     }
 
     @Test
