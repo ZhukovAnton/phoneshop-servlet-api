@@ -14,7 +14,12 @@
     <servlet-name>productDetails</servlet-name>
     <servlet-class>com.es.phoneshop.web.ProductDetailsPageServlet</servlet-class>
   </servlet>
-  
+
+  <servlet>
+    <servlet-name>cartPageServlet</servlet-name>
+    <servlet-class>com.es.phoneshop.web.CartPageServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>productList</servlet-name>
     <url-pattern>/products</url-pattern>
@@ -23,6 +28,11 @@
   <servlet-mapping>
     <servlet-name>productDetails</servlet-name>
     <url-pattern>/products/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>cartPageServlet</servlet-name>
+    <url-pattern>/cart</url-pattern>
   </servlet-mapping>
 
   <error-page>
@@ -43,5 +53,5 @@
     <param-name>AmountOfRecentlyViewedItems</param-name>
     <param-value>3</param-value>
   </context-param>
-
+s
 </web-app>

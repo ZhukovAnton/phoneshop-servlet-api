@@ -5,6 +5,7 @@
 
 
 <table>
+    <br>
     <thead>
     <b>
         Recently Viewed Phones
