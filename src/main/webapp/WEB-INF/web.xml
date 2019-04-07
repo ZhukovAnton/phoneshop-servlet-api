@@ -19,6 +19,16 @@
     <servlet-name>cartPageServlet</servlet-name>
     <servlet-class>com.es.phoneshop.web.CartPageServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>cartDeleteServlet</servlet-name>
+    <servlet-class>com.es.phoneshop.web.CartDeleteServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>cartDeleteServlet</servlet-name>
+    <url-pattern>/cart/delete/*</url-pattern>
+  </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>productList</servlet-name>

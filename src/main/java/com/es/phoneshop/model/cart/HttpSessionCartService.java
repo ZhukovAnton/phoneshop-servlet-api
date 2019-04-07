@@ -35,6 +35,7 @@ public class HttpSessionCartService implements CartService, Serializable {
         Optional<CartItem> cartItemOptional = getOptionalCartItem(cart, productId);
         if (cartItemOptional.isPresent()) {
             cart.getCartItems().removeIf(p -> p.getProduct().getId().equals(productId));
+            updateTotalPrice(cart);
         }
         else {
             throw new NoMoreSuchItemInCart("There is no such Phone anymore. Please, reload page :)");

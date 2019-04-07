@@ -27,6 +27,7 @@
             <td>Description</td>
             <td class="price">Price</td>
             <td>Quantity</td>
+            <td></td>
         </tr>
         </thead>
         <c:forEach items="${cart.cartItems}" var="item" varStatus="status">
@@ -39,20 +40,23 @@
                     <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="${item.product.currency.symbol}"/>
                 </td>
                 <td>
-                        <input name="quantity" type="number" value="${not empty paramValues.quantity[status.index] ? paramValues.quantity[status.index] : item.quantity}"  style="text-align: right"/>
-                        <input name="productId" type="hidden" value="${item.product.id}"/>
-                        <c:if test="${not empty errors[status.index]}">
-                            <br>
-                            <span style="color: firebrick">
-                                ${errors[status.index]}
-                            </span>
-                        </c:if>
+                    <input name="quantity" type="number" value="${not empty paramValues.quantity[status.index] ? paramValues.quantity[status.index] : item.quantity}"  style="text-align: right"/>
+                    <input name="productId" type="hidden" value="${item.product.id}"/>
+                    <c:if test="${not empty errors[status.index]}">
+                        <br>
+                        <span style="color: firebrick">
+                            ${errors[status.index]}
+                        </span>
+                    </c:if>
+                </td>
+                <td>
+                    <button formaction="${pageContext.servletContext.contextPath}/cart/delete/${item.product.id}">Delete</button>
                 </td>
             </tr>
         </c:forEach>
         <tr>
             <td colspan="3" style="text-align: right">Total</td>
-            <td>$${cart.totalPrice}</td>
+            <td colspan="2">$${cart.totalPrice}</td>
         </tr>
     </table>
     <br>

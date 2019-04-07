@@ -10,7 +10,9 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.resentlyviewed.HttpSessionRecentlyViewedService;
 import com.es.phoneshop.model.resentlyviewed.RecentlyViewedService;
+import com.es.phoneshop.utility.Utility;
 
+import javax.rmi.CORBA.Util;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +35,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             long productID;
-            productID = getProductIdFromRequest(request);
+            productID = Utility.getProductIdFromRequest(request);
             Product product;
             product = productDao.getProduct(productID);
             request.setAttribute("product", product);
@@ -55,7 +57,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
         long productID = 0L;
         try{
             try{
-                productID = getProductIdFromRequest(request);
+                productID = Utility.getProductIdFromRequest(request);
             }
             catch(NumberFormatException e) {
                 response.sendError(404);
@@ -77,11 +79,5 @@ public class ProductDetailsPageServlet extends HttpServlet {
             request.setAttribute("error", e.getMessage());
             doGet(request, response);
         }
-    }
-
-    private Long getProductIdFromRequest(HttpServletRequest request){
-        String URI = request.getRequestURI();
-        String productId = URI.substring(URI.lastIndexOf('/') + 1);
-        return Long.parseLong(productId);
     }
 }
