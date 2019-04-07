@@ -3,13 +3,14 @@ package com.es.phoneshop.model.product;
 import com.es.phoneshop.exception.IllegalSortParametrException;
 import com.es.phoneshop.exception.NoSuchProductWithCurrentIdException;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ArrayListProductDao implements ProductDao {
+public class ArrayListProductDao implements ProductDao, Serializable {
     private static volatile ArrayListProductDao instance;
     private List<Product> products;
 

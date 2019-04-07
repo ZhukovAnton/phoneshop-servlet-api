@@ -2,11 +2,12 @@ package com.es.phoneshop.model.resentlyviewed;
 
 import com.es.phoneshop.model.product.Product;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RecentlyViewed {
+public class RecentlyViewed implements Serializable {
     private LinkedList<Product> recentlyViewedItems;
 
     public List<Product> getRecentlyViewedAsList() {

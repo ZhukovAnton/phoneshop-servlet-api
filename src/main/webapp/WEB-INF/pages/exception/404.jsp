@@ -1,3 +1,4 @@
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: antonzh
@@ -7,13 +8,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" isErrorPage="true" language="java" %>
 <html>
-<head>
-    <title>No Product With Such ID!</title>
-</head>
+<tags:master pageTitle="Not Found"/>
 <body>
     <p>
         <b>
-            404 <br> ${!empty error.message ? error.message : "Page is not found:("}
+            404 <br> Page is not found:(
         </b>
     </p>
 </body>

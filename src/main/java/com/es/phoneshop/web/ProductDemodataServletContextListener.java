@@ -4,7 +4,6 @@ import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.resentlyviewed.HttpSessionRecentlyViewedService;
-import com.es.phoneshop.model.resentlyviewed.RecentlyViewed;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

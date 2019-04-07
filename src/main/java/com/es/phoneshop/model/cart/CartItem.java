@@ -1,14 +1,15 @@
 package com.es.phoneshop.model.cart;
 
+import java.io.Serializable;
 import java.lang.*;
 
 import com.es.phoneshop.model.product.Product;
 
-public class CartItem {
+public class CartItem implements Serializable {
     private Product product;
     private int quantity;
 
-    public CartItem(Product product, int quantity) {
+    CartItem(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
@@ -21,7 +22,7 @@ public class CartItem {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

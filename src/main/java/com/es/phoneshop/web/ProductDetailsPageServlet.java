@@ -32,7 +32,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            long productID = 0L;
+            long productID;
             productID = getProductIdFromRequest(request);
             Product product;
             product = productDao.getProduct(productID);
@@ -70,7 +70,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
             response.sendRedirect(request.getRequestURI() + "?message=Added Successfully");
         }
         catch(NumberFormatException e){
-            request.setAttribute("error", null == e.getMessage() ? "Not a Number" : e.getMessage());
+            request.setAttribute("error", "Not a Number");
             doGet(request, response);
         }
         catch(OutOfStockException e) {

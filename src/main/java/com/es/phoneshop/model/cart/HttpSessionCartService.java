@@ -1,5 +1,6 @@
 package com.es.phoneshop.model.cart;
 
+import com.es.phoneshop.exception.NoMoreSuchItemInCart;
 import com.es.phoneshop.exception.OutOfStockException;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
@@ -8,6 +9,7 @@ import com.es.phoneshop.model.product.ProductDao;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public class HttpSessionCartService implements CartService, Serializable {
@@ -29,6 +31,17 @@ public class HttpSessionCartService implements CartService, Serializable {
     private HttpSessionCartService() {}
 
     @Override
+    public void delete(Cart cart, long productId) throws NoMoreSuchItemInCart {
+        Optional<CartItem> cartItemOptional = getOptionalCartItem(cart, productId);
+        if (cartItemOptional.isPresent()) {
+            cart.getCartItems().removeIf(p -> p.getProduct().getId().equals(productId));
+        }
+        else {
+            throw new NoMoreSuchItemInCart("There is no such Phone anymore. Please, reload page :)");
+        }
+    }
+
+    @Override
     public Cart getCart(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute(SESSION_CART_KEY);
@@ -37,6 +50,34 @@ public class HttpSessionCartService implements CartService, Serializable {
             session.setAttribute(SESSION_CART_KEY, cart);
         }
         return cart;
+    }
+
+    @Override
+    public void update(Cart cart, long productId, Integer newQuantity) throws OutOfStockException,
+                                                                              NoMoreSuchItemInCart,
+                                                                              IllegalArgumentException  {
+
+        //need optional because client can open two tabs with cart and than delete item from one of them
+        Optional<CartItem> cartItemOptional = getOptionalCartItem(cart, productId);
+        if (cartItemOptional.isPresent()) {
+            CartItem item = cartItemOptional.get();
+            int productStock = item.getProduct().getStock();
+            if (newQuantity <= productStock) {
+                if (newQuantity > 0) {
+                    item.setQuantity(newQuantity);
+                }
+                else {
+                    throw new IllegalArgumentException("Can't be less than 0");
+                }
+                updateTotalPrice(cart);
+            }
+            else {
+                throw new OutOfStockException("Not enough stock. Stock is " + productStock);
+            }
+        }
+        else {
+            throw new NoMoreSuchItemInCart("There is no such Phone anymore. Please, reload page :)");
+        }
     }
 
     @Override
@@ -51,6 +92,7 @@ public class HttpSessionCartService implements CartService, Serializable {
             CartItem item = optionalItem.get();
             if (item.getQuantity() + quantity <= stock) {
                 item.setQuantity(item.getQuantity() + quantity);
+                updateTotalPrice(cart);
             }
             else {
                 throw new OutOfStockException("Not enough stock. Stock is " + stock);
@@ -60,6 +102,7 @@ public class HttpSessionCartService implements CartService, Serializable {
             if (quantity <= stock) {
                 CartItem item = new CartItem(product, quantity);
                 cart.getCartItems().add(item);
+                updateTotalPrice(cart);
             }
             else {
                 throw new OutOfStockException("Not enough stock. Stock is " + stock);
@@ -67,5 +110,21 @@ public class HttpSessionCartService implements CartService, Serializable {
         }
     }
 
+    private Optional<CartItem> getOptionalCartItem(Cart cart, long productId) {
+        return cart.getCartItems()
+                .stream()
+                .filter(p -> p.getProduct()
+                                .getId()
+                                .equals(productId))
+                .findFirst();
+    }
+
+    private void updateTotalPrice(Cart cart) {
+        cart.setTotalPrice(cart.getCartItems().stream()
+                .map(p -> p.getProduct()
+                            .getPrice()
+                            .multiply(new BigDecimal(p.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+    }
 
 }
