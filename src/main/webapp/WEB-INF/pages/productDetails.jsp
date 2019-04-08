@@ -44,4 +44,7 @@
         </p>
     </c:otherwise>
 </c:choose>
+<br>
+<jsp:include page="/minicart"/>
+<br>
 <tags:recentlyViewed recentlyViewed="${recentlyViewed}"/>

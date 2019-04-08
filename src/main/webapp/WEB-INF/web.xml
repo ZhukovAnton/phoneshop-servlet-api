@@ -24,6 +24,16 @@
     <servlet-name>cartDeleteServlet</servlet-name>
     <servlet-class>com.es.phoneshop.web.CartDeleteServlet</servlet-class>
   </servlet>
+
+  <servlet>
+    <servlet-name>miniCartServlet</servlet-name>
+    <servlet-class>com.es.phoneshop.web.MiniCartServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>miniCartServlet</servlet-name>
+    <url-pattern>/minicart</url-pattern>
+  </servlet-mapping>
   
   <servlet-mapping>
     <servlet-name>cartDeleteServlet</servlet-name>

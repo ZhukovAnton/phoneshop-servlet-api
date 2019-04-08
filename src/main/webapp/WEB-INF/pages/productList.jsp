@@ -5,10 +5,14 @@
 
 <jsp:useBean id="products" type="java.util.ArrayList" scope="request"/>
 <jsp:useBean id="recentlyViewed" type="java.util.ArrayList" scope="request"/>
+
 <tags:master pageTitle="Product List">
   <p>
     Welcome to Expert-Soft training!
   </p>
+  <br>
+  <jsp:include page="/minicart"/>
+  <br>
   <form>
     <input name="search" value="${param.search}">
     <button>Search</button>
@@ -34,4 +38,5 @@
     </c:forEach>
   </table>
 </tags:master>
+<br>
 <tags:recentlyViewed recentlyViewed="${recentlyViewed}"/>
