@@ -7,7 +7,6 @@ import com.es.phoneshop.model.cart.CartService;
 import com.es.phoneshop.model.cart.HttpSessionCartService;
 import com.es.phoneshop.model.resentlyviewed.HttpSessionRecentlyViewedService;
 import com.es.phoneshop.model.resentlyviewed.RecentlyViewedService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

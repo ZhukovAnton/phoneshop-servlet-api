@@ -37,7 +37,7 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public String getCode() {
+    String getCode() {
         return code;
     }
 

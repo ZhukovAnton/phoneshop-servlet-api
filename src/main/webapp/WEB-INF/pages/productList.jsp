@@ -10,9 +10,6 @@
   <p>
     Welcome to Expert-Soft training!
   </p>
-  <br>
-  <jsp:include page="/minicart"/>
-  <br>
   <form>
     <input name="search" value="${param.search}">
     <button>Search</button>

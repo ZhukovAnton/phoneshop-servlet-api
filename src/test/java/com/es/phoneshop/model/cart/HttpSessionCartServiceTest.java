@@ -5,7 +5,6 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,9 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -44,8 +41,6 @@ public class HttpSessionCartServiceTest {
     Cart cart;
     @Mock
     CartItem cartItem;
-    @Mock
-    BigDecimal price;
 
     @Before
     public void setUp() {
@@ -78,6 +73,5 @@ public class HttpSessionCartServiceTest {
         when(cartItem.getQuantity()).thenReturn(1);
         service.addToCart(cart, 1L, 1);
     }
-
 
 }

@@ -68,7 +68,7 @@ public class HttpSessionCartService implements CartService, Serializable {
                     item.setQuantity(newQuantity);
                 }
                 else {
-                    throw new IllegalArgumentException("Can't be less than 0");
+                    throw new IllegalArgumentException("Can't be less than 1");
                 }
                 updateTotalPrice(cart);
             }

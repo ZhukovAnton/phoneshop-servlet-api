@@ -30,7 +30,7 @@ public class ProductDemodataServletContextListener implements ServletContextList
             productDao.save(new Product(11L, "simc56", "Siemens C56", new BigDecimal(70), Currency.getInstance("USD"), 20, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C56.jpg"));
             productDao.save(new Product(12L, "simc61", "Siemens C61", new BigDecimal(80), Currency.getInstance("USD"), 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C61.jpg"));
         }
-        HttpSessionRecentlyViewedService.setAmountOfRecentlyViewed(Integer.parseInt((String) servletContextEvent
+        HttpSessionRecentlyViewedService.setAmountOfRecentlyViewed(Integer.parseInt(servletContextEvent
                 .getServletContext()
                 .getInitParameter("AmountOfRecentlyViewedItems")));
     }

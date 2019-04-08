@@ -73,17 +73,6 @@ public class ArrayListProductDaoTest
         assertTrue(productDao.findProducts(search, sort, order).isEmpty());
     }
 
-
-    //??very strange test
-    @Test
-    public void testFindProductsSearchResult() {
-        search = "1 Product2";
-        sort = null;
-        order = null;
-        productDao.save(product2);
-        assertEquals(new ArrayList<>(Arrays.asList(product2, product1)), productDao.findProducts(search, sort, order));
-    }
-
     @Test
     public void testFindSortedByDescriptionWithoutOrderProductsSearchResult() {
         search = "Product2 1";

@@ -6,7 +6,6 @@ import com.es.phoneshop.model.cart.CartService;
 import com.es.phoneshop.model.cart.HttpSessionCartService;
 import com.es.phoneshop.utility.Utility;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,12 +15,12 @@ public class CartDeleteServlet extends HttpServlet {
     private CartService cartService;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         cartService = HttpSessionCartService.getInstance();
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Cart cart = cartService.getCart(request);
         Long productId = Utility.getProductIdFromRequest(request);
         try{

@@ -4,7 +4,6 @@ import com.es.phoneshop.exception.NoMoreSuchItemInCart;
 import com.es.phoneshop.exception.OutOfStockException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 
 public interface CartService {
     void addToCart(Cart cart, long productId, int quantity) throws OutOfStockException;

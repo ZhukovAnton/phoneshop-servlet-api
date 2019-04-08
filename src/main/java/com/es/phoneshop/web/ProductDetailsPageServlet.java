@@ -12,7 +12,6 @@ import com.es.phoneshop.model.resentlyviewed.HttpSessionRecentlyViewedService;
 import com.es.phoneshop.model.resentlyviewed.RecentlyViewedService;
 import com.es.phoneshop.utility.Utility;
 
-import javax.rmi.CORBA.Util;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +38,6 @@ public class ProductDetailsPageServlet extends HttpServlet {
             Product product;
             product = productDao.getProduct(productID);
             request.setAttribute("product", product);
-            request.setAttribute("cart", cartService.getCart(request).getCartItems());
             request.setAttribute("recentlyViewed", recentlyViewedService.getRecentlyViewed().getRecentlyViewedAsList());
             recentlyViewedService.add(product);
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
