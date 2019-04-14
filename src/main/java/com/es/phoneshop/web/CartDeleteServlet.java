@@ -1,9 +1,9 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.exception.NoMoreSuchItemInCart;
-import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.cart.CartService;
-import com.es.phoneshop.model.cart.HttpSessionCartService;
+import com.es.phoneshop.model.cartandcheckout.cart.Cart;
+import com.es.phoneshop.model.cartandcheckout.cart.CartService;
+import com.es.phoneshop.model.cartandcheckout.cart.HttpSessionCartService;
 import com.es.phoneshop.utility.Utility;
 
 import javax.servlet.http.HttpServlet;
@@ -29,6 +29,6 @@ public class CartDeleteServlet extends HttpServlet {
         catch(NoMoreSuchItemInCart e) {
             request.setAttribute("error", "There is no this Phone in the cart anymore. Please, reload the page :)");
         }
-        response.sendRedirect(request.getContextPath() + "/cart?message=Cart item deleted successfully");
+        response.sendRedirect(request.getContextPath() + "/cart?message=Cart Item deleted successfully");
     }
 }

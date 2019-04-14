@@ -1,9 +1,9 @@
 package com.es.phoneshop.web;
 
 
-import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.cart.CartItem;
-import com.es.phoneshop.model.cart.CartService;
+import com.es.phoneshop.model.cartandcheckout.cart.Cart;
+import com.es.phoneshop.model.cartandcheckout.Item;
+import com.es.phoneshop.model.cartandcheckout.cart.CartService;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.resentlyviewed.RecentlyViewed;
@@ -46,7 +46,7 @@ public class ProductDetailsPageServletTest {
     @Mock
     private Cart cart;
     @Mock
-    private List<CartItem> cartItems;
+    private List<Item> items;
     @Mock
     private RecentlyViewed recentlyViewed;
     @Mock
@@ -60,7 +60,7 @@ public class ProductDetailsPageServletTest {
         when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
         when(productDao.getProduct(1L)).thenReturn(product);
         when(cartService.getCart(request)).thenReturn(cart);
-        when(cart.getCartItems()).thenReturn(cartItems);
+        when(cart.getItems()).thenReturn(items);
         when(recentlyViewedService.getRecentlyViewed()).thenReturn(recentlyViewed);
         when(recentlyViewed.getRecentlyViewedAsList()).thenReturn(recentlyViewedList);
 
@@ -81,7 +81,7 @@ public class ProductDetailsPageServletTest {
     @Test
     public void testSetCartAttribute() throws IOException, ServletException {
         servlet.doPost(request, response);
-        verify(request).setAttribute("cart", cartService.getCart(request).getCartItems());
+        verify(request).setAttribute("cart", cartService.getCart(request).getItems());
     }
 
     @Test

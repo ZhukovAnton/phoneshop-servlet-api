@@ -1,10 +1,9 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.cart.HttpSessionCartService;
+import com.es.phoneshop.model.cartandcheckout.cart.Cart;
+import com.es.phoneshop.model.cartandcheckout.cart.HttpSessionCartService;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.resentlyviewed.HttpSessionRecentlyViewedService;
-import com.es.phoneshop.model.resentlyviewed.RecentlyViewed;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

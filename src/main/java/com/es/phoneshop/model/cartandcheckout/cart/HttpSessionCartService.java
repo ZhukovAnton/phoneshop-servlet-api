@@ -1,7 +1,8 @@
-package com.es.phoneshop.model.cart;
+package com.es.phoneshop.model.cartandcheckout.cart;
 
 import com.es.phoneshop.exception.NoMoreSuchItemInCart;
 import com.es.phoneshop.exception.OutOfStockException;
+import com.es.phoneshop.model.cartandcheckout.Item;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class HttpSessionCartService implements CartService, Serializable {
     private static final String SESSION_CART_KEY = "sessionCart";
     private static volatile HttpSessionCartService instance;
-    private static ProductDao productDao = ArrayListProductDao.getInstance();
+    private ProductDao productDao = ArrayListProductDao.getInstance();
 
     public static HttpSessionCartService getInstance() {
         if (instance == null) {
@@ -32,9 +33,9 @@ public class HttpSessionCartService implements CartService, Serializable {
 
     @Override
     public void delete(Cart cart, long productId) throws NoMoreSuchItemInCart {
-        Optional<CartItem> cartItemOptional = getOptionalCartItem(cart, productId);
+        Optional<Item> cartItemOptional = getOptionalCartItem(cart, productId);
         if (cartItemOptional.isPresent()) {
-            cart.getCartItems().removeIf(p -> p.getProduct().getId().equals(productId));
+            cart.getItems().removeIf(p -> p.getProduct().getId().equals(productId));
             updateTotalPrice(cart);
         }
         else {
@@ -58,10 +59,10 @@ public class HttpSessionCartService implements CartService, Serializable {
                                                                               NoMoreSuchItemInCart,
                                                                               IllegalArgumentException  {
 
-        //need optional because client can open two tabs with cart and than delete item from one of them
-        Optional<CartItem> cartItemOptional = getOptionalCartItem(cart, productId);
+        //need optional because client can open two tabs with cart and than delete Item from one of them
+        Optional<Item> cartItemOptional = getOptionalCartItem(cart, productId);
         if (cartItemOptional.isPresent()) {
-            CartItem item = cartItemOptional.get();
+            Item item = cartItemOptional.get();
             int productStock = item.getProduct().getStock();
             if (newQuantity <= productStock) {
                 if (newQuantity > 0) {
@@ -86,11 +87,11 @@ public class HttpSessionCartService implements CartService, Serializable {
         Product product = productDao.getProduct(productId);
         int stock = product.getStock();
 
-        Optional<CartItem> optionalItem = cart.getCartItems()
+        Optional<Item> optionalItem = cart.getItems()
                                                 .stream()
                                                 .filter(p -> p.getProduct().getId().equals(productId)).findAny();
         if (optionalItem.isPresent()) {
-            CartItem item = optionalItem.get();
+            Item item = optionalItem.get();
             if (item.getQuantity() + quantity <= stock) {
                 item.setQuantity(item.getQuantity() + quantity);
                 updateTotalPrice(cart);
@@ -101,8 +102,8 @@ public class HttpSessionCartService implements CartService, Serializable {
         }
         else {
             if (quantity <= stock) {
-                CartItem item = new CartItem(product, quantity);
-                cart.getCartItems().add(item);
+                Item item = new Item(product, quantity);
+                cart.getItems().add(item);
                 updateTotalPrice(cart);
             }
             else {
@@ -111,8 +112,14 @@ public class HttpSessionCartService implements CartService, Serializable {
         }
     }
 
-    private Optional<CartItem> getOptionalCartItem(Cart cart, long productId) {
-        return cart.getCartItems()
+    @Override
+    public void clearCart(Cart cart) {
+        cart.getItems().clear();
+        cart.setTotalPrice(BigDecimal.ZERO);
+    }
+
+    private Optional<Item> getOptionalCartItem(Cart cart, long productId) {
+        return cart.getItems()
                 .stream()
                 .filter(p -> p.getProduct()
                                 .getId()
@@ -121,7 +128,7 @@ public class HttpSessionCartService implements CartService, Serializable {
     }
 
     private void updateTotalPrice(Cart cart) {
-        cart.setTotalPrice(cart.getCartItems().stream()
+        cart.setTotalPrice(cart.getItems().stream()
                 .map(p -> p.getProduct()
                             .getPrice()
                             .multiply(new BigDecimal(p.getQuantity())))

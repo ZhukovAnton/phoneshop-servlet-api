@@ -25,6 +25,26 @@
     <servlet-class>com.es.phoneshop.web.CartDeleteServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>checkoutPageServlet</servlet-name>
+    <servlet-class>com.es.phoneshop.web.CheckoutPageServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>overviewServlet</servlet-name>
+    <servlet-class>com.es.phoneshop.web.OrderOverViewServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>overviewServlet</servlet-name>
+    <url-pattern>/checkout/overview/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>checkoutPageServlet</servlet-name>
+    <url-pattern>/checkout</url-pattern>
+  </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>cartDeleteServlet</servlet-name>
     <url-pattern>/cart/delete/*</url-pattern>
@@ -63,5 +83,5 @@
     <param-name>AmountOfRecentlyViewedItems</param-name>
     <param-value>3</param-value>
   </context-param>
-s
+
 </web-app>
