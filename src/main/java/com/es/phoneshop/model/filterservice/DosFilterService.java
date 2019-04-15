@@ -1,8 +1,8 @@
 package com.es.phoneshop.model.filterservice;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DosFilterService {
@@ -23,7 +23,7 @@ public class DosFilterService {
     }
 
     private DosFilterService() {
-        ipCallCounter = new HashMap<>();
+        ipCallCounter = new ConcurrentHashMap<>();
         lastResetedDate = new Date();
     }
 

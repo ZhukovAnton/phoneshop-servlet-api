@@ -14,6 +14,8 @@ public class Order implements Serializable {
     private List<Item> orderItems;
     private String name;
     private String address;
+    private String date;
+    private String paymentMethod;
     private DeliveryMode.EnumDelModes deliveryMode;
     private Long id;
     private String secureId;
@@ -48,6 +50,22 @@ public class Order implements Serializable {
 
     public String getSecureId() {
         return secureId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     void setSecureId(String secureId) {

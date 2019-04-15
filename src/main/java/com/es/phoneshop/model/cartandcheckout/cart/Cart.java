@@ -16,6 +16,10 @@ public class Cart implements Serializable {
         return items;
     }
 
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }

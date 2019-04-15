@@ -57,16 +57,30 @@
                 </span>
             </c:if>
         </p>
-        <select name="delivery">
-            <c:forEach items="${delivery.modes}" var="mode">
-                <option>${mode}</option>
-            </c:forEach>
-        </select>
-        <%--
         <p>
-            Delivery Cost: ${selectedDelivery.deliveryCost}
+            <label for="date">Date:</label>
+            <input type="date" name="date" id="date"/>
+            <c:if test="${not empty dateError}">
+                <span style="color: firebrick">
+                        ${dateError}
+                </span>
+            </c:if>
         </p>
---%>
+        <p>
+            <label>Payment method:</label>
+            <select name="payment">
+                <option>Card</option>
+                <option>Cash</option>
+            </select>
+        </p>
+        <p>
+            <label>Delivery mode:</label>
+            <select name="delivery">
+                <c:forEach items="${delivery.modes}" var="mode">
+                    <option>${mode} $${mode.deliveryCost}</option>
+                </c:forEach>
+            </select>
+        </p>
         <p>
             <button>
                 Place Order

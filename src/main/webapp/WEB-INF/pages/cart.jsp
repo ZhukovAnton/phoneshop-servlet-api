@@ -63,7 +63,7 @@
         <button>Update</button>
     </form>
     <form method="get">
-        <button formaction="${pageContext.servletContext.contextPath}/checkout">Checkout</button>
+        <button <c:if test="${empty cart}">disabled="disabled"</c:if> formaction="${pageContext.servletContext.contextPath}/checkout">Checkout</button>
     </form>
 
     <tags:recentlyViewed recentlyViewed="${recentlyViewed}"/>

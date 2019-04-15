@@ -114,7 +114,8 @@ public class HttpSessionCartService implements CartService, Serializable {
 
     @Override
     public void clearCart(Cart cart) {
-        cart.getItems().clear();
+        //TODO:set new empty cart
+        cart .getItems().clear();
         cart.setTotalPrice(BigDecimal.ZERO);
     }
 

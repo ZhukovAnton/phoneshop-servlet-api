@@ -45,4 +45,6 @@ public class ArrayListOrderDao implements OrderDao{
             throw new NoElementWithSuchSecureIdException("oops");
         }
     }
+
+    //TODO: abstract dao with save, delete, getById methods
 }

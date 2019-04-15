@@ -65,8 +65,6 @@ public class HttpSessionCartServiceTest {
         Assert.assertEquals(service.getCart(request), cart);
     }
 
-    //mock of getProduct() is not working correctly
-    //TODO: fix that
     @Test(expected = OutOfStockException.class)
     public void testAddToCart() throws OutOfStockException{
         when(productDao.getProduct(1L)).thenReturn(product);

@@ -26,6 +26,7 @@ public class DeliveryMode {
     }
 
     public static EnumDelModes getDeliveryModeFromString(String str) {
+        str = str.substring(0, str.lastIndexOf(" "));
         switch(str){
             case "COURIER" :
                 return EnumDelModes.COURIER;

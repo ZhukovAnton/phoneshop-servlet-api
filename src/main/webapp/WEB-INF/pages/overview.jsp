@@ -4,7 +4,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <jsp:useBean id="order" class="com.es.phoneshop.model.cartandcheckout.order.Order" scope="request"/>
-<tags:master pageTitle="Checkout">
+<tags:master pageTitle="Overview">
     <table>
         <thead>
         <tr>
@@ -48,12 +48,30 @@
             ${order.address}
         </p>
         <p>
+            Date:
+                ${order.date}
+        </p>
+        <p>
+            Payment method:
+                ${order.paymentMethod}
+        </p>
+        <p>
             Delivery mode:
             ${order.deliveryMode}
         </p>
 
+
+        <p>
+            <span style="color: green">
+                <b>
+                    Your order will be processed soon. <br>
+                    And now you can Go to Product List and look for anything interesting for you!
+                </b>
+            </span>
+
+        </p>
         <button type="submit" formaction="${pageContext.servletContext.contextPath}/products" formmethod="get">
-            Submit
+            GO!
         </button>
     </form>
 
