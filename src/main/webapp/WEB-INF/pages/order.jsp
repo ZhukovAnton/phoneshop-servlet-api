@@ -43,14 +43,18 @@
             <label for="name">Name:</label>
             <input type="text" name="name" id="name"/>
             <c:if test="${not empty nameError}">
-                ${nameError}
+                <span style="color: firebrick">
+                        ${nameError}
+                </span>
             </c:if>
         </p>
         <p>
-            <label for="address">Addess:</label>
+            <label for="address">Address:</label>
             <input type="text" name="address" id="address"/>
             <c:if test="${not empty addressError}">
-                ${addressError}
+                <span style="color: firebrick">
+                        ${addressError}
+                </span>
             </c:if>
         </p>
         <select name="delivery">

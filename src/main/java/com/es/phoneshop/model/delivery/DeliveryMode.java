@@ -35,7 +35,7 @@ public class DeliveryMode {
         }
     }
 
-    DeliveryMode() {
+    public DeliveryMode() {
         modes = new ArrayList<>();
         modes.add(EnumDelModes.COURIER);
         modes.add(EnumDelModes.POST_OFFICE);
