@@ -30,6 +30,7 @@ public class ProductDemodataServletContextListenerTest {
     public void setUp() {
         when(servletContextEvent.getServletContext()).thenReturn(context);
         when(context.getInitParameter("InitProductDAOWithConstants")).thenReturn("true");
+        when(context.getInitParameter("AmountOfRecentlyViewedItems")).thenReturn("3");
     }
 
     @Test

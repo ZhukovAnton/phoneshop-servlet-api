@@ -10,6 +10,7 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.resentlyviewed.HttpSessionRecentlyViewedService;
 import com.es.phoneshop.model.resentlyviewed.RecentlyViewedService;
+import com.es.phoneshop.utility.Utility;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,12 +33,11 @@ public class ProductDetailsPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            long productID = 0L;
-            productID = getProductIdFromRequest(request);
+            long productID;
+            productID = Utility.getProductIdFromRequest(request);
             Product product;
             product = productDao.getProduct(productID);
             request.setAttribute("product", product);
-            request.setAttribute("cart", cartService.getCart(request).getCartItems());
             request.setAttribute("recentlyViewed", recentlyViewedService.getRecentlyViewed().getRecentlyViewedAsList());
             recentlyViewedService.add(product);
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
@@ -55,7 +55,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
         long productID = 0L;
         try{
             try{
-                productID = getProductIdFromRequest(request);
+                productID = Utility.getProductIdFromRequest(request);
             }
             catch(NumberFormatException e) {
                 response.sendError(404);
@@ -70,18 +70,12 @@ public class ProductDetailsPageServlet extends HttpServlet {
             response.sendRedirect(request.getRequestURI() + "?message=Added Successfully");
         }
         catch(NumberFormatException e){
-            request.setAttribute("error", null == e.getMessage() ? "Not a Number" : e.getMessage());
+            request.setAttribute("error", "Not a Number");
             doGet(request, response);
         }
         catch(OutOfStockException e) {
             request.setAttribute("error", e.getMessage());
             doGet(request, response);
         }
-    }
-
-    private Long getProductIdFromRequest(HttpServletRequest request){
-        String URI = request.getRequestURI();
-        String productId = URI.substring(URI.lastIndexOf('/') + 1);
-        return Long.parseLong(productId);
     }
 }

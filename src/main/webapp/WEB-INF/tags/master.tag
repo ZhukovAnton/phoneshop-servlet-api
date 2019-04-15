@@ -10,14 +10,13 @@
 </head>
 <body class="product-list">
   <header>
-    <a href="${pageContext.servletContext.contextPath}">
-      <img src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
-      PhoneShop
-    </a>
-    Cart:
-    <c:forEach var="item" items="${cart}">
-      <br> ${item.product} quantity = ${item.quantity}
-    </c:forEach>
+    <p>
+      <a href="${pageContext.servletContext.contextPath}">
+        <img src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
+        PhoneShop
+      </a>
+      <jsp:include page="/WEB-INF/fragments/miniCart.jsp"/>
+    </p>
   </header>
   <main>
     <jsp:doBody/>
