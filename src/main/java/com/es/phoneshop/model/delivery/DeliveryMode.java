@@ -31,13 +31,11 @@ public class DeliveryMode {
                 return EnumDelModes.COURIER;
             case "POST_OFFICE" :
                 return EnumDelModes.POST_OFFICE;
-            case "STORE_PICKUP" :
-                return EnumDelModes.STORE_PICKUP;
             default: return EnumDelModes.STORE_PICKUP;
         }
     }
 
-    public DeliveryMode() {
+    DeliveryMode() {
         modes = new ArrayList<>();
         modes.add(EnumDelModes.COURIER);
         modes.add(EnumDelModes.POST_OFFICE);

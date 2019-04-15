@@ -1,13 +1,7 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.exception.NoElementWithSuchSecureIdException;
-import com.es.phoneshop.model.cartandcheckout.cart.Cart;
-import com.es.phoneshop.model.cartandcheckout.cart.CartService;
-import com.es.phoneshop.model.cartandcheckout.cart.HttpSessionCartService;
 import com.es.phoneshop.model.cartandcheckout.order.*;
-import com.es.phoneshop.model.delivery.DeliveryMode;
-import com.es.phoneshop.model.delivery.DeliveryModeService;
-import com.es.phoneshop.model.delivery.DeliveryModeServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

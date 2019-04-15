@@ -50,7 +50,7 @@ public class Order implements Serializable {
         return secureId;
     }
 
-    public void setSecureId(String secureId) {
+    void setSecureId(String secureId) {
         this.secureId = secureId;
     }
 

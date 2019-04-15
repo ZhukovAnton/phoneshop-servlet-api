@@ -10,7 +10,7 @@ public class DosFilter implements Filter {
     private DosFilterService service;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         service = DosFilterService.getInstance();
     }
 
