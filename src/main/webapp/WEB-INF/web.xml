@@ -35,6 +35,16 @@
     <servlet-class>com.es.phoneshop.web.OrderOverViewServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>productReview</servlet-name>
+    <servlet-class>com.es.phoneshop.web.ProductReviewServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>productReview</servlet-name>
+    <url-pattern>/review/*</url-pattern>
+  </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>overviewServlet</servlet-name>
     <url-pattern>/checkout/overview/*</url-pattern>
