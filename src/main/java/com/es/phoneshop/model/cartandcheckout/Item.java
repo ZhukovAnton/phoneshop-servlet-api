@@ -1,15 +1,20 @@
-package com.es.phoneshop.model.cart;
+package com.es.phoneshop.model.cartandcheckout;
 
 import java.io.Serializable;
 import java.lang.*;
 
 import com.es.phoneshop.model.product.Product;
 
-public class CartItem implements Serializable {
+public class Item implements Serializable {
     private Product product;
     private int quantity;
 
-    CartItem(Product product, int quantity) {
+    public Item(Item item) {
+        this.product = item.getProduct();
+        this.quantity = item.getQuantity();
+    }
+
+    public Item(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
@@ -22,13 +27,13 @@ public class CartItem implements Serializable {
         return quantity;
     }
 
-    void setQuantity(int quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
     @Override
     public String toString() {
-        return "CartItem{" +
+        return "Item{" +
                 "product=" + product +
                 ", quantity=" + quantity +
                 '}';

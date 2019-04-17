@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<jsp:useBean id="cart" class="com.es.phoneshop.model.cart.Cart" scope="request"/>
+<jsp:useBean id="cart" class="com.es.phoneshop.model.cartandcheckout.cart.Cart" scope="request"/>
 <jsp:useBean id="recentlyViewed" class="java.util.ArrayList" scope="request"/>
 <tags:master pageTitle="Cart">
     <c:choose>
@@ -30,7 +30,7 @@
                 <td></td>
             </tr>
             </thead>
-            <c:forEach items="${cart.cartItems}" var="item" varStatus="status">
+            <c:forEach items="${cart.items}" var="item" varStatus="status">
                 <tr>
                     <td>
                         <img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${item.product.imageUrl}">
@@ -61,6 +61,9 @@
         </table>
         <br>
         <button>Update</button>
+    </form>
+    <form method="get">
+        <button <c:if test="${empty cart}">disabled="disabled"</c:if> formaction="${pageContext.servletContext.contextPath}/checkout">Checkout</button>
     </form>
 
     <tags:recentlyViewed recentlyViewed="${recentlyViewed}"/>

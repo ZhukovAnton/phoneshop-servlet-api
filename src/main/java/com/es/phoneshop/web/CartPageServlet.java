@@ -2,9 +2,9 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.exception.NoMoreSuchItemInCart;
 import com.es.phoneshop.exception.OutOfStockException;
-import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.cart.CartService;
-import com.es.phoneshop.model.cart.HttpSessionCartService;
+import com.es.phoneshop.model.cartandcheckout.cart.Cart;
+import com.es.phoneshop.model.cartandcheckout.cart.CartService;
+import com.es.phoneshop.model.cartandcheckout.cart.HttpSessionCartService;
 import com.es.phoneshop.model.resentlyviewed.HttpSessionRecentlyViewedService;
 import com.es.phoneshop.model.resentlyviewed.RecentlyViewedService;
 

@@ -1,6 +1,7 @@
-package com.es.phoneshop.model.cart;
+package com.es.phoneshop.model.cartandcheckout.cart;
 
 import com.es.phoneshop.exception.OutOfStockException;
+import com.es.phoneshop.model.cartandcheckout.Item;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import org.junit.Assert;
@@ -25,22 +26,22 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class HttpSessionCartServiceTest {
     @Mock
-    ProductDao productDao;
+    private ProductDao productDao;
     @InjectMocks
     private HttpSessionCartService service;
     private static final String SESSION_CART_KEY = "sessionCart";
 
 
     @Mock
-    HttpServletRequest request;
+    private HttpServletRequest request;
     @Mock
-    Product product;
+    private Product product;
     @Mock
-    HttpSession session;
+    private HttpSession session;
     @Mock
-    Cart cart;
+    private Cart cart;
     @Mock
-    CartItem cartItem;
+    private Item item;
 
     @Before
     public void setUp() {
@@ -48,8 +49,8 @@ public class HttpSessionCartServiceTest {
         when(product.getPrice()).thenReturn(new BigDecimal(1));
         when(product.getId()).thenReturn(1L);
         when(request.getSession()).thenReturn(session);
-        when(cartItem.getProduct()).thenReturn(product);
-        when(cart.getCartItems()).thenReturn(Arrays.asList(cartItem));
+        when(item.getProduct()).thenReturn(product);
+        when(cart.getItems()).thenReturn(Arrays.asList(item));
     }
 
     @Test
@@ -64,13 +65,11 @@ public class HttpSessionCartServiceTest {
         Assert.assertEquals(service.getCart(request), cart);
     }
 
-    //mock of getProduct() is not working correctly
-    //TODO: fix that
     @Test(expected = OutOfStockException.class)
     public void testAddToCart() throws OutOfStockException{
         when(productDao.getProduct(1L)).thenReturn(product);
         when(product.getStock()).thenReturn(1);
-        when(cartItem.getQuantity()).thenReturn(1);
+        when(item.getQuantity()).thenReturn(1);
         service.addToCart(cart, 1L, 1);
     }
 
