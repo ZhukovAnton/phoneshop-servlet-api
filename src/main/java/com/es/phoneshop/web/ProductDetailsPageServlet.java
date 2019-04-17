@@ -1,13 +1,15 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.exception.NoSuchProductWithCurrentIdException;
-import com.es.phoneshop.exception.OutOfStockException;
+import com.es.phoneshop.exception.*;
 import com.es.phoneshop.model.cartandcheckout.cart.Cart;
 import com.es.phoneshop.model.cartandcheckout.cart.CartService;
 import com.es.phoneshop.model.cartandcheckout.cart.HttpSessionCartService;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
+import com.es.phoneshop.model.productreview.ProductReview;
+import com.es.phoneshop.model.productreview.ProductReviewDao;
+import com.es.phoneshop.model.productreview.ProductReviewService;
 import com.es.phoneshop.model.resentlyviewed.HttpSessionRecentlyViewedService;
 import com.es.phoneshop.model.resentlyviewed.RecentlyViewedService;
 import com.es.phoneshop.utility.Utility;
@@ -17,17 +19,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ProductDetailsPageServlet extends HttpServlet {
     private ProductDao productDao;
     private CartService cartService;
     private RecentlyViewedService recentlyViewedService;
+    private ProductReviewService reviewService;
 
     @Override
     public void init(){
         cartService = HttpSessionCartService.getInstance();
         productDao = ArrayListProductDao.getInstance();
         recentlyViewedService = HttpSessionRecentlyViewedService.getInstance();
+        reviewService = ProductReviewService.getInstance();
     }
 
     @Override
@@ -39,6 +44,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
             product = productDao.getProduct(productID);
             request.setAttribute("product", product);
             request.setAttribute("recentlyViewed", recentlyViewedService.getRecentlyViewed().getRecentlyViewedAsList());
+            request.setAttribute("reviews", reviewService.getReviewsById(productID) != null ? reviewService.getReviewsById(productID) : new ArrayList<ProductReview>());
             recentlyViewedService.add(product);
             request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
         }
@@ -53,6 +59,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
         long productID = 0L;
+
         try{
             try{
                 productID = Utility.getProductIdFromRequest(request);
@@ -60,21 +67,23 @@ public class ProductDetailsPageServlet extends HttpServlet {
             catch(NumberFormatException e) {
                 response.sendError(404);
             }
+
             int quantity;
             quantity = Integer.valueOf(request.getParameter("quantity"));
             if (quantity <= 0) {
                 throw new NumberFormatException("Can't be less than 1");
             }
+
             Cart cart = cartService.getCart(request);
             cartService.addToCart(cart, productID, quantity);
-            response.sendRedirect(request.getRequestURI() + "?message=Added Successfully");
+            response.sendRedirect(request.getRequestURI() + "?message=Success");
         }
         catch(NumberFormatException e){
-            request.setAttribute("error", "Not a Number");
+            request.setAttribute("numberFormatError", "Not a Number");
             doGet(request, response);
         }
         catch(OutOfStockException e) {
-            request.setAttribute("error", e.getMessage());
+            request.setAttribute("outOfStockError", e.getMessage());
             doGet(request, response);
         }
     }
